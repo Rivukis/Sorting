@@ -21,6 +21,7 @@
 		7A9BB9DC192BF5ED00FA1086 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9BB9BE192BF5ED00FA1086 /* UIKit.framework */; };
 		7A9BB9E4192BF5ED00FA1086 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A9BB9E2192BF5ED00FA1086 /* InfoPlist.strings */; };
 		7A9BB9E6192BF5ED00FA1086 /* SortingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9BB9E5192BF5ED00FA1086 /* SortingTests.m */; };
+		7A9BB9F4192BF7FA00FA1086 /* NSMutableArray+Sorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9BB9F3192BF7FA00FA1086 /* NSMutableArray+Sorting.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		7A9BB9E1192BF5ED00FA1086 /* SortingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SortingTests-Info.plist"; sourceTree = "<group>"; };
 		7A9BB9E3192BF5ED00FA1086 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7A9BB9E5192BF5ED00FA1086 /* SortingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SortingTests.m; sourceTree = "<group>"; };
+		7A9BB9F2192BF7FA00FA1086 /* NSMutableArray+Sorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Sorting.h"; sourceTree = "<group>"; };
+		7A9BB9F3192BF7FA00FA1086 /* NSMutableArray+Sorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Sorting.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,12 +115,12 @@
 		7A9BB9C0192BF5ED00FA1086 /* Sorting */ = {
 			isa = PBXGroup;
 			children = (
-				7A9BB9C9192BF5ED00FA1086 /* RIVAppDelegate.h */,
-				7A9BB9CA192BF5ED00FA1086 /* RIVAppDelegate.m */,
+				7A9BB9F2192BF7FA00FA1086 /* NSMutableArray+Sorting.h */,
+				7A9BB9F3192BF7FA00FA1086 /* NSMutableArray+Sorting.m */,
 				7A9BB9CC192BF5ED00FA1086 /* Main.storyboard */,
+				7A9BB9D2192BF5ED00FA1086 /* Images.xcassets */,
 				7A9BB9CF192BF5ED00FA1086 /* RIVViewController.h */,
 				7A9BB9D0192BF5ED00FA1086 /* RIVViewController.m */,
-				7A9BB9D2192BF5ED00FA1086 /* Images.xcassets */,
 				7A9BB9C1192BF5ED00FA1086 /* Supporting Files */,
 			);
 			path = Sorting;
@@ -126,6 +129,8 @@
 		7A9BB9C1192BF5ED00FA1086 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7A9BB9C9192BF5ED00FA1086 /* RIVAppDelegate.h */,
+				7A9BB9CA192BF5ED00FA1086 /* RIVAppDelegate.m */,
 				7A9BB9C2192BF5ED00FA1086 /* Sorting-Info.plist */,
 				7A9BB9C3192BF5ED00FA1086 /* InfoPlist.strings */,
 				7A9BB9C6192BF5ED00FA1086 /* main.m */,
@@ -251,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A9BB9CB192BF5ED00FA1086 /* RIVAppDelegate.m in Sources */,
+				7A9BB9F4192BF7FA00FA1086 /* NSMutableArray+Sorting.m in Sources */,
 				7A9BB9C7192BF5ED00FA1086 /* main.m in Sources */,
 				7A9BB9D1192BF5ED00FA1086 /* RIVViewController.m in Sources */,
 			);

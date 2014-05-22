@@ -11,8 +11,7 @@
 
 @interface RIVViewController ()
 
-@property (strong, nonatomic) NSMutableArray *normalSort;
-@property (strong, nonatomic) NSMutableArray *queueSort;
+@property (strong, nonatomic) NSMutableArray *unsortedArray;
 
 @end
 
@@ -22,30 +21,19 @@
 {
     [super viewDidLoad];
     
-    NSMutableSet *setToSort = [NSMutableSet new];
+    NSMutableSet *mutableSet = [NSMutableSet new];
+    for (NSInteger i = 1; i <= 100000; i++) [mutableSet addObject:@(i)];
+    self.unsortedArray = [[mutableSet allObjects] mutableCopy];
     
-    for (NSInteger i = 1; i <= 10000000; i++) {
-        [setToSort addObject:@(i)];
-    }
+//    self.unsortedArray = [@[@12, @13, @11, @7, @6, @2, @1, @14, @15, @10, @9, @8, @5, @4, @3, @16] mutableCopy];
     
-    self.normalSort = [[setToSort allObjects] mutableCopy];
-    self.queueSort = [[setToSort allObjects] mutableCopy];
+//    NSLog(@"before sort: %@", self.unsortedArray.description);
+    NSLog(@"start");
     
+    [self.unsortedArray sortUsingMergeSort];
     
-//    NSLog(@"start normal: %@", [self.normalSort description]);
-    NSLog(@"start normal");
-    [self.normalSort sortUsingQuickSort];
-//    NSLog(@"end normal: %@", [self.normalSort description]);
-    
-    NSLog(@"end normal / start queue");
-    
-//    NSLog(@"start queue: %@", [self.queueSort description]);
-    [self.queueSort sortUsingQueue];
-//    NSLog(@"end queue: %@", [self.queueSort description]);
-    
-    
-    
-    
+    NSLog(@"done");
+//    NSLog(@"after sort: %@", self.unsortedArray.description);
 }
 
 - (void)didReceiveMemoryWarning

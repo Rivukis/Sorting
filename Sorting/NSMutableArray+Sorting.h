@@ -11,6 +11,6 @@
 @interface NSMutableArray (Sorting)
 
 - (void)sortUsingQuickSort;
-- (void)sortUsingQueue;
+- (void)sortUsingMergeSort;
 
 @end

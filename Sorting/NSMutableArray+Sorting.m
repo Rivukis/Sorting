@@ -10,87 +10,112 @@
 
 @implementation NSMutableArray (Sorting)
 
+#pragma mark - Quick Sort
+
 - (void)sortUsingQuickSort
 {
-    
     [self sortUsingQuickSortWithLow:0 andHigh:self.count - 1];
-    
-    
-}
-
-- (void)sortUsingQueue
-{
-    NSOperationQueue *sortQueue = [NSOperationQueue new];
-    [self quickSortWithLow:0 andHigh:self.count - 1 UsingOperationQueue:sortQueue];
-    while (sortQueue.operationCount) {
-        NSLog(@"Not Done");
-//        usleep(500);
-    }
-    NSLog(@"Done");
 }
 
 - (void)sortUsingQuickSortWithLow:(NSInteger)low andHigh:(NSInteger)high
 {
-    if (low < high)
-    {
+    if (low < high) {
         NSInteger pivotLocation = [self partitionArray:self withLow:low andHigh:high];
         [self sortUsingQuickSortWithLow:low andHigh:pivotLocation - 1];
         [self sortUsingQuickSortWithLow:pivotLocation + 1 andHigh:high];
     }
 }
 
-- (void)quickSortWithLow:(NSInteger)low andHigh:(NSInteger)high UsingOperationQueue:(NSOperationQueue *)queue
-{
-    if (low < high)
-    {
-        __block NSInteger pivotLocation;
-        NSOperation *pivotOperation = [NSBlockOperation blockOperationWithBlock:^{
-            pivotLocation = [self partitionArray:self withLow:low andHigh:high];
-        }];
-        [pivotOperation setCompletionBlock:^{
-            [self sortUsingQuickSortWithLow:low andHigh:pivotLocation - 1];
-            [self sortUsingQuickSortWithLow:pivotLocation + 1 andHigh:high];
-            NSLog(@"block done");
-//            NSLog(@"block done: %@", [self description]);
-        }];
-        
-        [queue addOperation:pivotOperation];
-    }
-}
-
--(NSInteger)partitionArray:(NSMutableArray *)array withLow:(NSInteger)low andHigh:(NSInteger)high
+- (NSInteger)partitionArray:(NSMutableArray *)array withLow:(NSInteger)low andHigh:(NSInteger)high
 {
     NSInteger pivotValue = [self[low] integerValue];
     NSInteger leftWall = low;
     
     for (NSInteger i = low; i <= high; i++) {
         if ([self[i] integerValue] < pivotValue) {
-            leftWall++;
-            [self exchangeObjectAtIndex:i withObjectAtIndex:leftWall];
+            [self exchangeObjectAtIndex:i withObjectAtIndex:++leftWall];
         }
     }
     [array exchangeObjectAtIndex:low withObjectAtIndex:leftWall];
     
     return leftWall;
+}
+
+
+#pragma mark - In Place Merge Sort
+
+- (void)sortUsingMergeSort
+{
+    [self sortUsingMergeSortWithLow:0 andHigh:self.count - 1];
+}
+
+- (void)sortUsingMergeSortWithLow:(NSInteger)low andHigh:(NSInteger)high
+{
+    if (high - low > 0) {
+        NSInteger middle = floorf((high - low) / 2.0) + low;
+        [self sortUsingMergeSortWithLow:low andHigh:middle];
+        [self sortUsingMergeSortWithLow:middle + 1 andHigh:high];
+        [self mergeWithLeftLowIndex:low lowHigh:middle rightLow:middle + 1 andRightHigh:high]; // middle-1 then middle
+    }
+}
+
+
+- (void)mergeWithLeftLowIndex:(NSInteger)leftLow lowHigh:(NSInteger)leftHigh rightLow:(NSInteger)rightLow andRightHigh:(NSInteger)rightHigh
+{
+    while (leftLow != rightLow && rightLow <= rightHigh) {
+        if ([self[leftLow] integerValue] < [self[rightLow] integerValue]) {
+            leftLow++;
+        } else {
+            id obj = self[rightLow];
+            [self removeObjectAtIndex:rightLow++];
+            [self insertObject:obj atIndex:leftLow++];
+            leftHigh++;
+        }
+    }
+//    NSLog(@"current state: %@", self.description);
+}
+
+#pragma mark - ***NOT*** In Place Merge Sort
+
+- (NSArray *)sortUsingMergeSortWithArray:(NSArray *)unsortedArray
+{
+    if (unsortedArray.count < 2) return unsortedArray;
     
-//    int pivotValue = [array[low] intValue];
-//    int leftWall = low;
-//    
-//    for (int i = low; i <= high;i++) //this for loop gets every value less than the pivot value to the left of our leftwall
-//    {
-//        if ([array[i] intValue] < pivotValue)
-//        {
-//            leftWall++; //counting how many values are less than our pivotValue
-//            
-//            [array exchangeObjectAtIndex:i withObjectAtIndex:leftWall]; //Switches out the value at i for the value at leftWall, this way when we do the final exchange after this for loop, leftwall is the pivot (since it switched with low) and low is the final smaller value that was exchanged in the for loop
-//        }
-//    }
-//    
-//    [array exchangeObjectAtIndex:low withObjectAtIndex:leftWall];
-//    
-//    NSLog(@"%d",leftWall);
-//    
-//    return leftWall;
+    NSInteger middle = unsortedArray.count/2;
+    NSArray *leftArray = [unsortedArray subarrayWithRange:NSMakeRange(0, middle)];
+    NSArray *rightArray = [unsortedArray subarrayWithRange:NSMakeRange(middle, unsortedArray.count - middle)];
+    return [self arrayByMergingArray:[self sortUsingMergeSortWithArray:leftArray]
+                           withArray:[self sortUsingMergeSortWithArray:rightArray]];
+}
+
+-(NSArray *)arrayByMergingArray:(NSArray *)leftArray withArray:(NSArray *)rightArray
+{
+    NSMutableArray *collector = [NSMutableArray new];
+    NSInteger leftTracker = 0;
+    NSInteger rightTracker = 0;
+    
+    // Fill Collector Array until One Array Has Added Every Index
+    while (leftTracker < leftArray.count && rightTracker < rightArray.count) {
+        if ([leftArray[leftTracker] integerValue] < [rightArray[rightTracker] integerValue]) {
+            [collector addObject:leftArray[leftTracker++]];
+        } else {
+            [collector addObject:rightArray[rightTracker++]];
+        }
+    }
+    
+    // Return NSArray of collector And the Items Not Yet Added to collector
+    NSRange range;
+    NSArray *sortedArray;
+    
+    if (leftTracker < leftArray.count) {
+        range = NSMakeRange(leftTracker, leftArray.count - leftTracker);
+        sortedArray = [collector arrayByAddingObjectsFromArray:[leftArray subarrayWithRange:range]];
+    } else {
+        range = NSMakeRange(rightTracker, ([rightArray count] - rightTracker));
+        sortedArray = [collector arrayByAddingObjectsFromArray:[rightArray subarrayWithRange:range]];
+    }
+    
+    return sortedArray;
 }
 
 @end
